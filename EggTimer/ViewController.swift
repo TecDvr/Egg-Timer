@@ -1,19 +1,19 @@
 import UIKit
+import AVFoundation
 
 class ViewController: UIViewController {
     
-    let eggTimes = ["Soft": 3, "Medium": 4, "Hard": 7] //dictionary
-    
+    let eggTimes = ["Soft": 300, "Medium": 420, "Hard": 720]
     var timer = Timer()
-    
     var totalTime = 0
     var secondsPassed = 0
+    var player: AVAudioPlayer!
     
     @IBOutlet weak var readyLabel: UILabel!
     @IBOutlet var progressBar: UIProgressView!
     @IBAction func hardnessSelected(_ sender: UIButton) {
         
-        timer.invalidate() // stops previous timer so only one runs at a time
+        timer.invalidate()
         let hardness = sender.currentTitle!
         totalTime = eggTimes[hardness]!
         
@@ -32,6 +32,13 @@ class ViewController: UIViewController {
         } else {
             timer.invalidate()
             readyLabel.text = "Done!"
+            playSound()
         }
+    }
+    
+    func playSound() {
+        let url = Bundle.main.url(forResource: "alarm_sound", withExtension: "mp3")
+        player = try! AVAudioPlayer(contentsOf: url!)
+        player.play()
     }
 }
